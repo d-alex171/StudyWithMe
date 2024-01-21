@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "keywords": [],
-  "main": "src/index.tsx",
+  "main": "static/src/map.tsx",
   "dependencies": {
     "@mappedin/mappedin-js": "5.25.0",
     "react": "18.0.0",
