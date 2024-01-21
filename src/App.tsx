@@ -6,8 +6,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <div style={{ display: "flex", gap: "12px" }}>
-        Examples:
-        <Link to="/">Basic</Link>
       </div>
       <Routes>
         <Route path="/" element={<Basic />} />
