@@ -1,50 +1,106 @@
-/* Use a custom font for the whole page */
+/* Style the form */
+form {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background: #f0f0f0;
+  }
+  
+  /* Style the labels */
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Style the inputs */
+  input[type=text] {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  /* Style the button */
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Add some hover effects */
+  button:hover {
+    background: #3A9E3A;
+  }
+  
+  input[type=text]:focus {
+    border-color: #4CAF50;
+  }
+  
+  /* This is a comment in CSS */
+
+/* Import a font from Google Fonts */
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
-/* Set the background color and font family of the body */
+/* Set the default font and color for the body */
 body {
-  background-color: #f0f0f0;
   font-family: 'Roboto', sans-serif;
-}
-
-/* Center the form on the page */
-form {
-  width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-/* Style the labels with a bold font weight and a dark gray color */
-label {
-  display: block;
-  font-weight: bold;
   color: #333;
-  margin-bottom: 5px;
 }
 
-/* Style the input fields with a light gray border and some padding */
-input {
-  display: block;
-  width: 100%;
-  border: 1px solid #ddd;
-  padding: 10px;
+/* Set the style for the link */
+a {
+  color: #2196f3;
+  text-decoration: none;
+}
+
+/* Set the style for the heading */
+h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
-/* Style the submit button with a blue background and white text */
-button {
-  display: block;
-  width: 100%;
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  padding: 15px;
-  cursor: pointer;
+/* Set the style for the paragraph */
+p {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
-button:hover {
-  background-color: #1a80d6;
+/* Set the style for the table */
+table {
+  border-collapse: collapse;
+  width: 60%;
+  margin: 0 auto;
 }
 
+/* Set the style for the table header */
+th {
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: left;
+}
+
+/* Set the style for the table data */
+td {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Set the style for the odd rows */
+tr:nth-child(odd) {
+  background-color: #fafafa;
+}
+
+/* Set the style for the even rows */
+tr:nth-child(even) {
+  background-color: #fff;
+}

@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>StudyWithMe</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    
-        
+
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='style.css')}}"
+    />
 </head>
 <body>
-<a href="chatroom">chatroom</a>
+
 
 <h1> Hi, {{ session_user[0] }} </h1>
 
@@ -28,6 +30,9 @@
   </tr>
     {% endfor %}
 </table>
+<a href = "chatroom">
+    <button>Chatroom</button>
+</a>
 
 </body>
 </html>

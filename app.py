@@ -1,13 +1,9 @@
-
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 from string import ascii_uppercase
 
 from threading import Lock
-from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS
-from api.ApiHandler import ApiHandler
 
 import secrets
 import json
@@ -18,8 +14,7 @@ import random
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
 
-api = Api(app)
-api.add_resource(ApiHandler, '/flask/hello')
+
 
 session_users_data = {}
 session_ips = []  # update using db or json
@@ -90,11 +85,6 @@ def login():
     return render_template('login.html')
 
 
-@app.route("/map", defaults={'path':''})
-def serve(path):
-    return send_from_directory(app.static_folder, 'public/map.html')
-
-
 def generate_chat_code():
     letters = string.ascii_lowercase
     result_str = ''.join(random.choice(letters) for i in range(5))
@@ -124,7 +114,7 @@ def home():
     current_ip = request.remote_addr
     session.clear()
     if request.method == "POST":
-        name = session_users_data[session_users_ips[current_ip]][0]
+        name = request.form.get("name")
         code = request.form.get("code")
         join = request.form.get("join", False)
         create = request.form.get("create", False)
@@ -143,7 +133,7 @@ def home():
             return render_template("home.html", error="Room does not exist.", code=code, name=name, room_list=room_names, room_data=rooms)
         
         session["room"] = room
-        session["name"] = session_users_data[session_users_ips[current_ip]][0]
+        session["name"] = name
         print(rooms)
         print(room_names)
         return redirect(url_for("room"))
