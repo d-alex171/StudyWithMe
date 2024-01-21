@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect
-from flask_socketio import SocketIO
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_socketio import join_room, leave_room, send, SocketIO
+import random
+from string import ascii_uppercase
 from threading import Lock
 import secrets
 import json
@@ -14,11 +16,6 @@ session = {}
 session_ips = []  # update using db or json
 session_users = []
 session_users_ips = {}
-
-from flask import Flask, render_template, request, session, redirect, url_for
-from flask_socketio import join_room, leave_room, send, SocketIO
-import random
-from string import ascii_uppercase
 
 
 app = Flask(__name__)

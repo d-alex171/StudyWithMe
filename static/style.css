@@ -1,42 +1,50 @@
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+/* Use a custom font for the whole page */
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+/* Set the background color and font family of the body */
+body {
+  background-color: #f0f0f0;
+  font-family: 'Roboto', sans-serif;
 }
 
-.UpperMenu {
-    background-color: rgb(30, 30, 30);
-
+/* Center the form on the page */
+form {
+  width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-nav {
-    background-color: rgb(30, 30, 30);
+/* Style the labels with a bold font weight and a dark gray color */
+label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
 }
 
-.navbar {
-    background-color:rgb(30, 30, 30);
-}
-.Front {
-    background-color: rgb(40, 40, 40);
-}
-
-.MainBody {
-    background-color: rgb(40, 40, 40);
+/* Style the input fields with a light gray border and some padding */
+input {
+  display: block;
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-h1 {
-    font-family: Arial, Helvetica, sans-serif;
-    color:rgb(205, 213, 221);
+/* Style the submit button with a blue background and white text */
+button {
+  display: block;
+  width: 100%;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 15px;
+  cursor: pointer;
 }
 
-p {
-    color:aliceblue;
+button:hover {
+  background-color: #1a80d6;
 }
 
-img {
-    width: 500px;
-}
-
-#profile-pic {
-    width: 300px;
-}
