@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_from_directory
 from flask_socketio import SocketIO
 from threading import Lock
+from flask_restful import Api, Resource, reqparse
+from flask_cors import CORS
+from api.ApiHandler import ApiHandler
+
 import secrets
 import json
 import time
@@ -10,7 +14,10 @@ import random
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
 
-session = {}
+api = Api(app)
+api.add_resource(ApiHandler, '/flask/hello')
+
+session_users_data = {}
 session_ips = []  # update using db or json
 session_users = []
 session_users_ips = {}
@@ -26,7 +33,7 @@ app.config["SECRET_KEY"] = "HackCampProject123!"
 socketio = SocketIO(app)
 
 rooms = {}
-
+room_names = []
 def generate_unique_code(length):
     while True:
         code = ""
@@ -37,12 +44,13 @@ def generate_unique_code(length):
             break
     return code
 
+
 @app.route('/')
 def home_page():  # put application's code here
     current_ip = request.remote_addr
     if request.remote_addr in session_ips:
         print(session)
-        return render_template('index.html', session_user=session[session_users_ips[current_ip]], session_users=session_users)
+        return render_template('index.html', session_user=session_users_data[session_users_ips[current_ip]], session_users=session_users, session=session_users_data)
     else:
         return render_template('login.html')
 
@@ -57,7 +65,7 @@ def signup():
 def login():
     current_ip = request.remote_addr
     if current_ip in session_ips:
-        return render_template("index.html", session_user=session[session_users_ips[current_ip]], session_users=session_users)
+        return render_template("index.html", session_user=session_users_data[session_users_ips[current_ip]], session_users=session_users, session=session_users_data)
     else:
         if request.method == 'POST':
             username = request.form['username']
@@ -73,14 +81,19 @@ def login():
                 session_ips.append(current_ip)
                 session_users.append(username)
 
-                session[username] = user_data
+                session_users_data[username] = user_data
                 session_users_ips[current_ip] = username
 
                 save_to_json(user_data)
-                print(session)
-                return render_template('index.html', session_user=session[username], session_users=session_users)
+                print(session_users_data)
+                return render_template('index.html', session_user=session_users_data[session_users_ips[current_ip]], session_users=session_users, session=session_users_data)
 
     return render_template('login.html')
+
+
+@app.route("/map", defaults={'path':''})
+def serve(path):
+    return send_from_directory(app.static_folder, 'public/map.html')
 
 
 def generate_chat_code():
@@ -105,34 +118,39 @@ def save_to_json(data):
     with open("userData.json", "w") as write_file:
         json.dump(user_json, write_file)
 
-#chatroom features
+
+# chatroom features
 @app.route('/chatroom', methods=["POST", "GET"])
 def home():
+    current_ip = request.remote_addr
     session.clear()
     if request.method == "POST":
-        name = request.form.get("name")
+        name = session_users_data[session_users_ips[current_ip]][0]
         code = request.form.get("code")
         join = request.form.get("join", False)
         create = request.form.get("create", False)
 
         if not name:
-            return render_template("home.html", error="Please enter a name.", code=code, name=name)
+            return render_template("home.html", error="Please enter a name.", code=code, name=name, room_list=room_names, room_data=rooms)
 
         if join != False and not code:
-            return render_template("home.html", error="Please enter a room code.", code=code, name=name)
+            return render_template("home.html", error="Please enter a room code.", code=code, name=name, room_list=room_names, room_data=rooms)
         
         room = code
         if create != False:
             room = generate_unique_code(4)
             rooms[room] = {"members": 0, "messages": []}
         elif code not in rooms:
-            return render_template("home.html", error="Room does not exist.", code=code, name=name)
+            return render_template("home.html", error="Room does not exist.", code=code, name=name, room_list=room_names, room_data=rooms)
         
         session["room"] = room
-        session["name"] = name
+        session["name"] = session_users_data[session_users_ips[current_ip]][0]
+        print(rooms)
+        print(room_names)
         return redirect(url_for("room"))
 
-    return render_template("home.html")
+    return render_template("home.html", room_list=room_names, room_data=rooms)
+
 
 @app.route("/room")
 def room():
@@ -141,6 +159,7 @@ def room():
         return redirect(url_for("home"))
 
     return render_template("room.html", code=room, messages=rooms[room]["messages"])
+
 
 @socketio.on("message")
 def message(data):
@@ -156,6 +175,7 @@ def message(data):
     rooms[room]["messages"].append(content)
     print(f"{session.get('name')} said: {data['data']}")
 
+
 @socketio.on("connect")
 def connect(auth):
     room = session.get("room")
@@ -170,6 +190,7 @@ def connect(auth):
     send({"name": name, "message": "has entered the room"}, to=room)
     rooms[room]["members"] += 1
     print(f"{name} joined room {room}")
+
 
 @socketio.on("disconnect")
 def disconnect():

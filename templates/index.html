@@ -5,12 +5,26 @@
     <title>Log in</title>
 </head>
 <body>
-<h1> hi {{ session_user[0] }} </h1>
+<a href="chatroom">chatroom</a>
 
-{% for x in session_users %}
-    <a href="#"> {{ x }} </a>
-{% endfor %}
-<a href="login"> Log In </a>
-=======
+<h1> Hi, {{ session_user[0] }} </h1>
+
+<p>List of users available</p>
+
+<table style="width:100%">
+<tr>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Course</th>
+  </tr>
+    {% for x in session_users %}
+  <tr>
+    <td>{{ session[x][0] }}</td>
+    <td>{{ session[x][1] }} </td>
+    <td>{{ session[x][2] }}</td>
+  </tr>
+    {% endfor %}
+</table>
+
 </body>
 </html>
