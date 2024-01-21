@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in</title>
+</head>
+<body>
+<h1> hi {{ session_user[0] }} </h1>
+
+{% for x in session_users %}
+    <a href="#"> {{ x }} </a>
+{% endfor %}
+<a href="login"> Log In </a>
+=======
+</body>
+</html>
