@@ -1,6 +1,6 @@
 {
   "include": [
-    "./static/src/**/*"
+    "./src/**/*"
   ],
   "compilerOptions": {
     "strict": true,
